@@ -13,23 +13,21 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-export const ProductCard = () => {
+export const ProductCard = ({ product }) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        width: 300,
         backgroundColor: "#edede9",
         m: 3,
       }}
       elevation={4}
     >
       <CardHeader
-        avatar={<RocketLaunchIcon />}
+        avatar={product.isPrimeEligible === "1" ? <RocketLaunchIcon /> : null}
         title={
           <Typography variant="body1" color="text.secondary">
-            Honeywell TurboForce Power Fan (Quiet Operation Cooling, 90°
-            Variable Tilt, 3 Speed Settings, Wall Mount Feature, Table Fan)
-            HT900E
+            {product.title}
           </Typography>
         }
         subheader={
@@ -39,9 +37,14 @@ export const ProductCard = () => {
             alignContent="center"
             justifyContent="space-between"
           >
-            <Rating name="read-only" value={3.4} precision={0.1} readOnly />
+            <Rating
+              name="read-only"
+              value={+product.rating}
+              precision={0.1}
+              readOnly
+            />
             <Typography variant="caption" color="text.secondary">
-              24500 reviews
+              {product.totalReviews} reviews
             </Typography>
           </Stack>
         }
@@ -49,24 +52,24 @@ export const ProductCard = () => {
       <CardMedia
         component="img"
         height="200"
-        image="https://images.unsplash.com/photo-1682685797439-a05dd915cee9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+        image={product.imageUrl}
         alt="Paella dish"
         sx={{ objectFit: "contain" }}
       />
       <CardContent sx={{ textAlign: "center" }}>
         <Typography variant="h6" color="text.secondary">
-          £24.99
+          {product.price}
         </Typography>
       </CardContent>
       <Divider />
       <CardActions disableSpacing sx={{ justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites">
+        <IconButton>
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="add to favorites">
+        <IconButton href={product.detailPageURL} target="_blank">
           <VisibilityIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton>
           <AddShoppingCartIcon />
         </IconButton>
       </CardActions>

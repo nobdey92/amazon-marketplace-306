@@ -1,9 +1,21 @@
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+
 import { ProductCard } from "./ProductCard";
 
-export const ProductList = () => {
+export const ProductList = ({ products }) => {
   return (
-    <div>
-      <ProductCard />
-    </div>
+    <Stack>
+      <Typography variant="h4" sx={{ textAlign: "center" }}>
+        Results
+      </Typography>
+      <Divider />
+      <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
+        {products.map((product) => (
+          <ProductCard product={product} key={product.ASIN} />
+        ))}
+      </Stack>
+    </Stack>
   );
 };
