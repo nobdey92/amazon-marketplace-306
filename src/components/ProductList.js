@@ -1,3 +1,9 @@
+import { ProductCard } from "./ProductCard";
+
 export const ProductList = () => {
-  return <div>ProductList</div>;
+  return (
+    <div>
+      <ProductCard />
+    </div>
+  );
 };
