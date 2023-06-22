@@ -12,8 +12,37 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-export const ProductCard = ({ product }) => {
+import { getFromLocalStorage } from "../utils/getFromLocalStorage";
+
+export const ProductCard = ({ product, mode = "search", handleRemove }) => {
+  const handleAddToLS = () => {
+    const itemsFromLS = getFromLocalStorage("wishList");
+
+    const itemExists = itemsFromLS.find((item) => {
+      return item.ASIN === product.ASIN;
+    });
+
+    if (!itemExists) {
+      const newItems = [product, ...itemsFromLS];
+
+      localStorage.setItem("wishList", JSON.stringify(newItems));
+    }
+  };
+
+  const handleRemoveFromLS = () => {
+    const itemsFromLS = getFromLocalStorage("wishList");
+
+    const newItems = itemsFromLS.filter((item) => {
+      return item.ASIN !== product.ASIN;
+    });
+
+    localStorage.setItem("wishList", JSON.stringify(newItems));
+
+    handleRemove(newItems);
+  };
+
   return (
     <Card
       sx={{
@@ -63,9 +92,15 @@ export const ProductCard = ({ product }) => {
       </CardContent>
       <Divider />
       <CardActions disableSpacing sx={{ justifyContent: "space-between" }}>
-        <IconButton>
-          <FavoriteIcon />
-        </IconButton>
+        {mode === "search" ? (
+          <IconButton onClick={handleAddToLS}>
+            <FavoriteIcon />
+          </IconButton>
+        ) : (
+          <IconButton onClick={handleRemoveFromLS}>
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+        )}
         <IconButton href={product.detailPageURL} target="_blank">
           <VisibilityIcon />
         </IconButton>
