@@ -14,9 +14,11 @@ import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useApp } from "../hooks/useApp";
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { state } = useApp();
 
   const navigate = useNavigate();
 
@@ -114,7 +116,14 @@ export const NavBar = () => {
               }}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <Badge badgeContent={4} color="error">
+              <Badge
+                badgeContent={state.basket.reduce((acc, each) => {
+                  acc += each.quantity;
+
+                  return acc;
+                }, 0)}
+                color="error"
+              >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

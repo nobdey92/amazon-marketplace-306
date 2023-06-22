@@ -1,27 +1,18 @@
-import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 
+import { useApp } from "../hooks/useApp";
 import { ProductList } from "../components/ProductList";
-import { getFromLocalStorage } from "../utils/getFromLocalStorage";
 
 export const WishList = () => {
-  const [products, setProducts] = useState(getFromLocalStorage("wishList"));
-
-  const handleRemove = (products) => {
-    setProducts(products);
-  };
+  const { state } = useApp();
 
   return (
     <Stack spacing={3}>
-      {products.length === 0 ? (
+      {state.wishList.length === 0 ? (
         <Alert severity="info">You have no items in your wish list.</Alert>
       ) : (
-        <ProductList
-          products={products}
-          mode="wishList"
-          handleRemove={handleRemove}
-        />
+        <ProductList products={state.wishList} mode="wishList" />
       )}
     </Stack>
   );

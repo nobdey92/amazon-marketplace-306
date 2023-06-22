@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 
 import { ProductCard } from "./ProductCard";
 
-export const ProductList = ({ products, mode, handleRemove }) => {
+export const ProductList = ({ products, mode }) => {
   return (
     <Stack>
       <Typography variant="h4" sx={{ textAlign: "center" }}>
@@ -13,12 +13,7 @@ export const ProductList = ({ products, mode, handleRemove }) => {
       <Divider />
       <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
         {products.map((product) => (
-          <ProductCard
-            product={product}
-            key={product.ASIN}
-            mode={mode}
-            handleRemove={handleRemove}
-          />
+          <ProductCard product={product} key={product.ASIN} mode={mode} />
         ))}
       </Stack>
     </Stack>

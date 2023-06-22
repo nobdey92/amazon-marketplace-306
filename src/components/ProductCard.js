@@ -14,34 +14,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-import { getFromLocalStorage } from "../utils/getFromLocalStorage";
+import { useApp } from "../hooks/useApp";
 
-export const ProductCard = ({ product, mode = "search", handleRemove }) => {
-  const handleAddToLS = () => {
-    const itemsFromLS = getFromLocalStorage("wishList");
-
-    const itemExists = itemsFromLS.find((item) => {
-      return item.ASIN === product.ASIN;
-    });
-
-    if (!itemExists) {
-      const newItems = [product, ...itemsFromLS];
-
-      localStorage.setItem("wishList", JSON.stringify(newItems));
-    }
-  };
-
-  const handleRemoveFromLS = () => {
-    const itemsFromLS = getFromLocalStorage("wishList");
-
-    const newItems = itemsFromLS.filter((item) => {
-      return item.ASIN !== product.ASIN;
-    });
-
-    localStorage.setItem("wishList", JSON.stringify(newItems));
-
-    handleRemove(newItems);
-  };
+export const ProductCard = ({ product, mode = "search" }) => {
+  const { dispatch } = useApp();
 
   return (
     <Card
@@ -93,18 +69,30 @@ export const ProductCard = ({ product, mode = "search", handleRemove }) => {
       <Divider />
       <CardActions disableSpacing sx={{ justifyContent: "space-between" }}>
         {mode === "search" ? (
-          <IconButton onClick={handleAddToLS}>
+          <IconButton
+            onClick={() =>
+              dispatch({ type: "ADD_WISH_LIST_ITEM", payload: product })
+            }
+          >
             <FavoriteIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={handleRemoveFromLS}>
+          <IconButton
+            onClick={() =>
+              dispatch({ type: "REMOVE_WISH_LIST_ITEM", payload: product.ASIN })
+            }
+          >
             <RemoveCircleOutlineIcon />
           </IconButton>
         )}
         <IconButton href={product.detailPageURL} target="_blank">
           <VisibilityIcon />
         </IconButton>
-        <IconButton>
+        <IconButton
+          onClick={() =>
+            dispatch({ type: "ADD_BASKET_ITEM", payload: product })
+          }
+        >
           <AddShoppingCartIcon />
         </IconButton>
       </CardActions>
